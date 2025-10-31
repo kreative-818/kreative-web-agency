@@ -1,0 +1,15 @@
+
+name: app
+type: nodejs:20
+
+web:
+    commands:
+        start: "yarn start"
+    locations:
+        "/":
+            passthru: true
+            allow: false
+        "/_next":
+            passthru: true
+            allow: true
+            expires: 1y

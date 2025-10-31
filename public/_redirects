@@ -1,0 +1,15 @@
+
+# Serve static HTML files for key marketing pages
+/quote /quote/index.html 200
+/quote/ /quote/index.html 200
+/get-quote /get-quote/index.html 200
+/get-quote/ /get-quote/index.html 200
+/thank-you /thank-you/index.html 200
+/thank-you/ /thank-you/index.html 200
+/services /services/index.html 200
+/services/ /services/index.html 200
+/about /about/index.html 200
+/about/ /about/index.html 200
+
+# Fallback to Next.js for everything else
+/* /index.html 200

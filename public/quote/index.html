@@ -1,0 +1,128 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Get Your Free Quote — Kreative Web Agency</title>
+  <link rel="stylesheet" href="/assets/landing.css"/>
+  <link rel="icon" href="/favicon.svg"/>
+  <script>
+  (function(){
+    const map = {
+      "/quote": "/quote/index.html",
+      "/get-quote": "/get-quote/index.html",
+      "/thank-you": "/thank-you/index.html",
+      "/services": "/services/index.html",
+      "/about": "/about/index.html"
+    };
+    const p = window.location.pathname.replace(/\/+$/,'');
+    if (map[p]) window.location.replace(map[p]);
+  })();
+  </script>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <h1 class="h1">Get a Website That Brings You Leads — Not Headaches.</h1>
+    <p class="sub">Websites, web apps, and automations for North Carolina businesses. Reply within 24 hours.</p>
+  </section>
+  
+  <div class="card">
+    <form method="POST" action="https://kreativeaiagency.com/api/quotes" id="quoteForm">
+      <div class="grid">
+        <div>
+          <label>Full Name *</label>
+          <input name="name" required placeholder="John Smith"/>
+        </div>
+        <div>
+          <label>Email *</label>
+          <input type="email" name="email" required placeholder="john@example.com"/>
+        </div>
+        <div>
+          <label>Phone (optional)</label>
+          <input name="phone" type="tel" placeholder="(555) 123-4567"/>
+        </div>
+        <div>
+          <label>Project Type *</label>
+          <select name="projectType" required>
+            <option value="">Select one...</option>
+            <option value="website">Website</option>
+            <option value="webapp">Web App</option>
+            <option value="automation">Automation</option>
+            <option value="ecommerce">E-Commerce</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label>Budget Range *</label>
+          <select name="budget" required>
+            <option value="">Select one...</option>
+            <option value="500-1000">$500–$1,000</option>
+            <option value="1000-2500">$1,000–$2,500</option>
+            <option value="2500-5000">$2,500–$5,000</option>
+            <option value="5000+">$5,000+</option>
+          </select>
+        </div>
+        <div>
+          <label>Timeline *</label>
+          <select name="timeline" required>
+            <option value="">Select one...</option>
+            <option value="asap">ASAP (1-2 weeks)</option>
+            <option value="flexible">Flexible (1-2 months)</option>
+            <option value="planning">Just Planning</option>
+          </select>
+        </div>
+      </div>
+      
+      <label style="margin-top:12px">Describe your project *</label>
+      <textarea name="details" required placeholder="Tell us about your goals, required pages, features, deadlines, or anything else we should know..."></textarea>
+      
+      <div style="margin-top:20px; text-align:center">
+        <button class="btn" type="submit">Request My Free Quote</button>
+      </div>
+      
+      <p class="muted">By submitting, you agree to be contacted about your quote. We respond within 24 hours.</p>
+    </form>
+  </div>
+  
+  <div class="footer">
+    © 2025 Kreative Web Agency — Serving all of North Carolina<br>
+    <a href="/" style="color: var(--accent); text-decoration: none;">Back to Home</a>
+  </div>
+</div>
+
+<script>
+document.getElementById('quoteForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('button[type="submit"]');
+  const originalText = btn.textContent;
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  
+  try {
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+    
+    const response = await fetch('https://kreativeaiagency.com/api/quotes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    
+    if (response.ok) {
+      window.location.href = '/thank-you/index.html';
+    } else {
+      alert('Something went wrong. Please try again or email us directly at support@kreativewebagency.com');
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
+  } catch (error) {
+    alert('Something went wrong. Please try again or email us directly at support@kreativewebagency.com');
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

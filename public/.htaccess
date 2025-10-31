@@ -1,0 +1,17 @@
+
+# Apache rewrite rules for static HTML fallback
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Serve static HTML for marketing pages
+RewriteRule ^quote/?$ /quote/index.html [L]
+RewriteRule ^get-quote/?$ /get-quote/index.html [L]
+RewriteRule ^thank-you/?$ /thank-you/index.html [L]
+RewriteRule ^services/?$ /services/index.html [L]
+RewriteRule ^about/?$ /about/index.html [L]
+
+# Fallback to Next.js
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]
+</IfModule>

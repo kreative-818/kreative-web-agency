@@ -1,0 +1,585 @@
+
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/creative_web_agency/nextjs_space/node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id                String   @id @default(cuid())
+  businessName      String
+  businessType      String
+  currentWebsiteUrl String?
+  servicesInterested String[]
+  projectTimeline   String
+  budgetRange       String
+  contactName       String
+  contactEmail      String
+  contactPhone      String
+  additionalDetails String?
+  status            String   @default("new")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("leads")
+}
+
+model ScrapedLead {
+  id                    String   @id @default(cuid())
+  businessName          String
+  industry              String?
+  phone                 String?
+  email                 String?
+  websiteUrl            String?
+  address               String?
+  city                  String?
+  state                 String?
+  zipCode               String?
+  latitude              Float?
+  longitude             Float?
+  
+  // PRIMARY SOURCE TRACKING - Where we first found this lead
+  primarySource         String   @default("GOOGLE") // GOOGLE, LINKEDIN, FACEBOOK, INSTAGRAM, TIKTOK, SEO, MANUAL
+  sourceChannel         String?  // ORGANIC, PAID, SCRAPER, REFERRAL
+  
+  // Platform tracking (where we found them)
+  foundOnGoogle         Boolean  @default(false)
+  foundOnLinkedin       Boolean  @default(false)
+  foundOnFacebook       Boolean  @default(false)
+  foundOnInstagram      Boolean  @default(false)
+  foundOnTiktok         Boolean  @default(false)
+  
+  // Social profiles
+  googlePlaceId         String?
+  linkedinUrl           String?
+  facebookPageId        String?
+  instagramUsername     String?
+  tiktokUsername        String?
+  
+  // Metrics
+  googleRating          Float?
+  googleReviewsCount    Int?
+  facebookLikes         Int?
+  instagramFollowers    Int?
+  tiktokFollowers       Int?
+  
+  // Lead scoring
+  leadScore             Int      @default(0)
+  leadCategory          String?  // HOT, WARM, COLD, UNQUALIFIED
+  priority              Int      @default(0)
+  
+  // Website analysis
+  hasWebsite            Boolean  @default(false)
+  websiteScore          Int?
+  websiteAgeYears       Int?
+  mobileFriendly        Boolean?
+  pageSpeedScore        Int?
+  seoScore              Int?
+  websiteIssues         String[] // Array of detected issues
+  
+  // Outreach tracking
+  firstContactedAt      DateTime?
+  lastContactedAt       DateTime?
+  contactAttempts       Int      @default(0)
+  responseReceived      Boolean  @default(false)
+  responseText          String?  // Their response if they replied
+  interestedInService   Boolean  @default(false)
+  status                String   @default("NEW") // NEW, CONTACTED, INTERESTED, QUALIFIED, CONVERTED, LOST, DNC
+  
+  // Notes
+  notes                 String?
+  
+  // Timestamps
+  discoveredAt          DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@unique([businessName, phone, email])
+  @@index([leadScore])
+  @@index([leadCategory])
+  @@index([status])
+  @@index([city, state])
+  @@index([primarySource])
+  @@map("scraped_leads")
+}
+
+model IntentLead {
+  id                    String   @id @default(cuid())
+  
+  // Contact Info
+  fullName              String
+  email                 String
+  phone                 String
+  phoneType             String?  // MOBILE, LANDLINE, VOIP, UNKNOWN
+  phoneCarrier          String?
+  phoneValid            Boolean  @default(false)
+  
+  // Business Info
+  businessName          String?
+  businessType          String?
+  industry              String?
+  currentWebsite        String?
+  
+  // Project Details
+  projectType           String   // NEW_WEBSITE, REDESIGN, ECOMMERCE, CUSTOM_APP, LANDING_PAGE, OTHER
+  projectDescription    String?
+  features              String[] // Array of requested features
+  
+  // Budget & Timeline
+  budgetRange           String   // 500-1000, 1000-2500, 2500-5000, 5000-10000, 10000+
+  budgetAmount          Int?     // Numeric value for scoring
+  timeline              String   // URGENT, 1-2_WEEKS, 1_MONTH, 2-3_MONTHS, FLEXIBLE
+  urgencyScore          Int      @default(0)
+  
+  // Lead Scoring
+  leadScore             Int      @default(0)
+  qualificationStatus   String   @default("PENDING") // PENDING, QUALIFIED, DISQUALIFIED, CONTACTED, CONVERTED
+  disqualifyReason      String?
+  
+  // Source Tracking
+  utmSource             String?  // google, facebook, organic
+  utmMedium             String?  // cpc, social, email
+  utmCampaign           String?
+  landingPage           String?  // Which page they landed on
+  referrer              String?
+  
+  // Engagement
+  formStartedAt         DateTime?
+  formCompletedAt       DateTime?
+  timeToComplete        Int?     // Seconds
+  formAbandoned         Boolean  @default(false)
+  
+  // Follow-up Tracking
+  firstContactedAt      DateTime?
+  lastContactedAt       DateTime?
+  emailsSent            Int      @default(0)
+  smsSent               Int      @default(0)
+  callAttempts          Int      @default(0)
+  responseReceived      Boolean  @default(false)
+  responseText          String?
+  interested            Boolean  @default(false)
+  
+  // Automation
+  automatedEmailSent    Boolean  @default(false)
+  automatedSmsSent      Boolean  @default(false)
+  notificationSent      Boolean  @default(false) // Notification sent to you
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@unique([email])
+  @@index([leadScore])
+  @@index([qualificationStatus])
+  @@index([budgetRange])
+  @@index([createdAt])
+  @@map("intent_leads")
+}
+
+model Quote {
+  id                    String   @id @default(cuid())
+  service               String
+  price                 String
+  description           String?
+  conversationHistory   String?  // JSON string of conversation
+  status                String   @default("pending") // pending, paid, cancelled
+  customerName          String?
+  customerEmail         String?
+  customerPhone         String?
+  customerCompany       String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@index([status])
+  @@index([createdAt])
+  @@map("quotes")
+}
+
+model TransferRequest {
+  id                    String   @id @default(cuid())
+  reason                String
+  summary               String
+  conversationHistory   String?  // JSON string of conversation
+  status                String   @default("pending") // pending, handled, closed
+  handledBy             String?
+  handledAt             DateTime?
+  notes                 String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@index([status])
+  @@index([createdAt])
+  @@map("transfer_requests")
+}
+
+model Contact {
+  id                    String         @id @default(cuid())
+  firstName             String
+  email                 String         @unique
+  source                String         @default("chatbot") // chatbot, form, manual
+  status                String         @default("new") // new, contacted, qualified, converted, lost
+  notes                 String?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  conversations         Conversation[]
+  
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+  @@map("contacts")
+}
+
+model Conversation {
+  id                    String   @id @default(cuid())
+  contactId             String?
+  contact               Contact? @relation(fields: [contactId], references: [id])
+  firstName             String?
+  email                 String?
+  messages              String   // JSON string of messages
+  status                String   @default("active") // active, closed, transferred
+  expiresAt             DateTime // Auto-calculated: createdAt + 45 minutes
+  lastMessageAt         DateTime @default(now())
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@index([contactId])
+  @@index([status])
+  @@index([expiresAt])
+  @@index([lastMessageAt])
+  @@map("conversations")
+}
+
+// NextAuth Models
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String
+  image         String?
+  role          String    @default("user") // user, admin
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model CallLog {
+  id                    String   @id @default(cuid())
+  
+  // Call Details
+  callId                String?  @unique // Quo's call ID
+  phoneNumber           String
+  callerName            String?
+  direction             String   @default("inbound") // inbound, outbound
+  duration              Int?     // Duration in seconds
+  recordingUrl          String?
+  transcriptUrl         String?
+  transcript            String?  // Full call transcript
+  
+  // Sona AI Data
+  sonaHandled           Boolean  @default(false)
+  sonaQualified         Boolean  @default(false)
+  sonaDisqualifyReason  String?
+  sonaSummary           String?  // AI summary of the call
+  sonaIntentDetected    String?  // NEW_WEBSITE, REDESIGN, SEO, etc.
+  
+  // Lead Information Captured
+  leadName              String?
+  leadEmail             String?
+  leadPhone             String?
+  leadBusinessName      String?
+  leadIndustry          String?
+  leadBudget            String?
+  leadTimeline          String?
+  leadProjectType       String?
+  leadNotes             String?
+  
+  // Qualification Status
+  qualificationStatus   String   @default("PENDING") // PENDING, QUALIFIED, NOT_QUALIFIED, TRANSFERRED, VOICEMAIL
+  leadScore             Int      @default(0)
+  
+  // Transfer & Follow-up
+  transferredToAgent    Boolean  @default(false)
+  agentPickedUp         Boolean  @default(false)
+  voicemailLeft         Boolean  @default(false)
+  
+  // Automated Actions
+  followUpEmailSent     Boolean  @default(false)
+  followUpSmsSent       Boolean  @default(false)
+  addedToContacts       Boolean  @default(false)
+  contactId             String?  // Link to Contact model if created
+  
+  // Call Quality Metrics
+  callStatus            String?  // completed, no-answer, busy, failed
+  callQuality           String?  // excellent, good, poor
+  customerSentiment     String?  // positive, neutral, negative
+  
+  // Timestamps
+  callStartedAt         DateTime?
+  callEndedAt           DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@index([phoneNumber])
+  @@index([qualificationStatus])
+  @@index([sonaQualified])
+  @@index([callStartedAt])
+  @@index([createdAt])
+  @@map("call_logs")
+}
+
+model SocialMediaPost {
+  id                    String   @id @default(cuid())
+  
+  // Content
+  content               String   // Main text content
+  caption               String?  // Platform-specific caption
+  hashtags              String[] // Array of hashtags
+  mediaUrls             String[] // Array of image/video URLs
+  mediaType             String   @default("text") // text, image, video, carousel
+  
+  // Platform Targeting
+  platforms             String[] // TIKTOK, INSTAGRAM, FACEBOOK
+  
+  // Platform-Specific IDs (after posting)
+  tiktokPostId          String?
+  instagramPostId       String?
+  facebookPostId        String?
+  
+  // Scheduling
+  status                String   @default("draft") // draft, scheduled, published, failed
+  scheduledFor          DateTime?
+  publishedAt           DateTime?
+  
+  // AI Generation
+  aiGenerated           Boolean  @default(false)
+  aiPrompt              String?  // The prompt used to generate content
+  contentPillar         String?  // EDUCATIONAL, PORTFOLIO, BTS, INDUSTRY
+  
+  // Performance Metrics (updated periodically)
+  views                 Int      @default(0)
+  likes                 Int      @default(0)
+  comments              Int      @default(0)
+  shares                Int      @default(0)
+  engagementRate        Float?
+  
+  // Metadata
+  createdBy             String   @default("admin") // admin, automated
+  failureReason         String?
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@index([status])
+  @@index([scheduledFor])
+  @@index([publishedAt])
+  @@index([contentPillar])
+  @@map("social_media_posts")
+}
+
+model SocialMediaAccount {
+  id                    String   @id @default(cuid())
+  
+  // Account Details
+  platform              String   // TIKTOK, INSTAGRAM, FACEBOOK
+  accountName           String
+  accountHandle         String
+  
+  // Authentication (encrypted)
+  accessToken           String?
+  refreshToken          String?
+  tokenExpiresAt        DateTime?
+  
+  // Account Metrics
+  followers             Int      @default(0)
+  totalPosts            Int      @default(0)
+  avgEngagementRate     Float?
+  
+  // Status
+  isActive              Boolean  @default(true)
+  lastSyncedAt          DateTime?
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@unique([platform, accountHandle])
+  @@index([platform])
+  @@index([isActive])
+  @@map("social_media_accounts")
+}
+
+model ContentQueue {
+  id                    String   @id @default(cuid())
+  
+  // Content Details
+  topic                 String
+  contentType           String   // VIDEO, IMAGE, CAROUSEL, TEXT
+  priority              Int      @default(5) // 1-10, 10 being highest
+  
+  // Generation
+  status                String   @default("pending") // pending, generated, approved, rejected
+  generatedContent      String?
+  generatedMediaUrls    String[]
+  
+  // Assignment
+  assignedToPlatforms   String[] // Which platforms this content is for
+  targetDate            DateTime? // When this should be posted
+  
+  // Approval
+  needsApproval         Boolean  @default(true)
+  approvedBy            String?
+  approvedAt            DateTime?
+  rejectionReason       String?
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@index([status])
+  @@index([priority])
+  @@index([targetDate])
+  @@map("content_queue")
+}
+
+model SEOKeyword {
+  id                    String   @id @default(cuid())
+  
+  // Keyword Details
+  keyword               String   @unique
+  searchVolume          Int?     // Monthly search volume
+  difficulty            Int?     // 0-100 score
+  cpc                   Float?   // Cost per click
+  intent                String?  // COMMERCIAL, INFORMATIONAL, TRANSACTIONAL
+  
+  // Tracking
+  currentRanking        Int?     // Current position in search results
+  targetRanking         Int      @default(10) // Target position
+  pages                 String[] // Which pages target this keyword
+  
+  // Status
+  isActive              Boolean  @default(true)
+  isPrimary             Boolean  @default(false) // Primary vs secondary keyword
+  
+  // Performance
+  clicks                Int      @default(0)
+  impressions           Int      @default(0)
+  ctr                   Float?   // Click-through rate
+  
+  // Timestamps
+  lastCheckedAt         DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@index([keyword])
+  @@index([isPrimary])
+  @@index([isActive])
+  @@map("seo_keywords")
+}
+
+model BlogPost {
+  id                    String   @id @default(cuid())
+  
+  // Content
+  title                 String
+  slug                  String   @unique
+  content               String   // Full HTML/Markdown content
+  excerpt               String?  // Short summary
+  
+  // Featured Image
+  featuredImage         String?
+  featuredImageAlt      String?
+  
+  // SEO
+  metaTitle             String?
+  metaDescription       String?
+  targetKeywords        String[] // Array of keywords
+  focusKeyword          String?  // Primary keyword
+  
+  // Organization
+  category              String?  // Web Design, SEO, Marketing, etc.
+  tags                  String[] // Array of tags
+  
+  // Publishing
+  status                String   @default("draft") // draft, scheduled, published
+  publishedAt           DateTime?
+  scheduledFor          DateTime?
+  
+  // AI Generation
+  aiGenerated           Boolean  @default(false)
+  aiPrompt              String?  // Prompt used for generation
+  autoPublish           Boolean  @default(false)
+  
+  // Performance Metrics
+  views                 Int      @default(0)
+  likes                 Int      @default(0)
+  shares                Int      @default(0)
+  avgTimeOnPage         Float?   // Average seconds
+  bounceRate            Float?
+  
+  // Internal Links
+  internalLinks         String[] // URLs to other pages on site
+  externalLinks         String[] // URLs to external resources
+  
+  // Author
+  authorName            String   @default("Kreative Web Agency")
+  authorEmail           String?
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  lastModifiedAt        DateTime @updatedAt
+  
+  @@index([slug])
+  @@index([status])
+  @@index([publishedAt])
+  @@index([category])
+  @@index([focusKeyword])
+  @@map("blog_posts")
+}
