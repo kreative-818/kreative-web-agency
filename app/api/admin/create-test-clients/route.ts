@@ -7,7 +7,14 @@ import { eq } from 'drizzle-orm';
 
 export async function POST(request: Request) {
   try {
-    const results = [];
+    const results: Array<{
+      name: string;
+      email: string;
+      password?: string;
+      company?: string;
+      project?: string;
+      status: string;
+    }> = [];
 
     // Check if Chris Klein already exists
     const existingChris = await db.select().from(clients).where(eq(clients.email, 'chris@testclient.com')).limit(1);

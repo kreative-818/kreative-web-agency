@@ -288,10 +288,10 @@ function PricingCards({ packages, billingPeriod }: { packages: typeof websitePac
         return (
           <Card 
             key={pkg.name}
-            className={`relative ${
+            className={`relative bg-white ${
               pkg.highlight 
-                ? "border-2 border-primary shadow-2xl shadow-primary/20 md:scale-105" 
-                : "border-slate-700 bg-slate-900/50"
+                ? "border-2 border-blue-500 shadow-2xl shadow-blue-100 md:scale-105" 
+                : "border-slate-200"
             }`}
           >
             {pkg.badge && (
@@ -304,32 +304,32 @@ function PricingCards({ packages, billingPeriod }: { packages: typeof websitePac
             
             <CardHeader>
               <div className="flex items-center justify-center mb-4">
-                <Icon className={`w-12 h-12 ${pkg.highlight ? "text-primary" : "text-slate-400"}`} />
+                <Icon className={`w-12 h-12 ${pkg.highlight ? "text-blue-600" : "text-slate-400"}`} />
               </div>
-              <CardTitle className="text-2xl text-center">{pkg.name}</CardTitle>
-              <CardDescription className="text-slate-400 text-center min-h-[48px]">
+              <CardTitle className="text-2xl text-center text-slate-900">{pkg.name}</CardTitle>
+              <CardDescription className="text-slate-600 text-center min-h-[48px]">
                 {pkg.description}
               </CardDescription>
             </CardHeader>
 
             <CardContent>
-              <div className="mb-6 text-center border-b border-slate-700 pb-6">
+              <div className="mb-6 text-center border-b border-slate-200 pb-6">
                 <div className="flex items-baseline justify-center mb-1">
-                  <span className="text-5xl md:text-6xl font-bold">${pkg.price.toLocaleString()}</span>
+                  <span className="text-5xl md:text-6xl font-bold text-slate-900">${pkg.price.toLocaleString()}</span>
                 </div>
-                <p className="text-sm text-slate-400 mb-3">
+                <p className="text-sm text-slate-500 mb-3">
                   One-time investment
                 </p>
                 
                 {pkg.monthlyRetainer && (
-                  <div className="mt-4 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
-                    <p className="text-xs text-slate-400 mb-1">Support & Maintenance</p>
+                  <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
+                    <p className="text-xs text-slate-600 mb-1">Support & Maintenance</p>
                     <div className="flex items-baseline justify-center gap-1">
-                      <p className="text-2xl font-bold text-green-400">${displayPrice}</p>
-                      <p className="text-sm text-slate-400">{priceLabel}</p>
+                      <p className="text-2xl font-bold text-green-700">${displayPrice}</p>
+                      <p className="text-sm text-slate-600">{priceLabel}</p>
                     </div>
                     {billingPeriod === 'yearly' && yearlySavings > 0 && (
-                      <p className="text-xs text-green-400 mt-1 font-semibold">
+                      <p className="text-xs text-green-700 mt-1 font-semibold">
                         Save ${yearlySavings}/year
                       </p>
                     )}
@@ -343,11 +343,11 @@ function PricingCards({ packages, billingPeriod }: { packages: typeof websitePac
               </div>
 
               <div className="space-y-2 md:space-y-3 mb-4">
-                <p className="text-sm font-semibold text-slate-200 mb-2">Initial Development Includes:</p>
+                <p className="text-sm font-semibold text-slate-900 mb-2">Initial Development Includes:</p>
                 {pkg.features.map((feature, i) => (
                   <div key={i} className="flex items-start gap-2 md:gap-3">
-                    <Check className="w-4 h-4 md:w-5 md:h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span className={`text-sm md:text-base ${feature.includes("Everything in") ? "font-semibold text-primary" : "text-slate-300"}`}>
+                    <Check className="w-4 h-4 md:w-5 md:h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <span className={`text-sm md:text-base ${feature.includes("Everything in") ? "font-semibold text-blue-600" : "text-slate-700"}`}>
                       {feature}
                     </span>
                   </div>
@@ -355,12 +355,12 @@ function PricingCards({ packages, billingPeriod }: { packages: typeof websitePac
               </div>
 
               {pkg.retainerFeatures && pkg.retainerFeatures.length > 0 && (
-                <div className="space-y-2 md:space-y-3 pt-4 border-t border-slate-700">
-                  <p className="text-sm font-semibold text-green-400 mb-2">Monthly Retainer Includes:</p>
+                <div className="space-y-2 md:space-y-3 pt-4 border-t border-slate-200">
+                  <p className="text-sm font-semibold text-green-700 mb-2">Monthly Retainer Includes:</p>
                   {pkg.retainerFeatures.map((feature, i) => (
                     <div key={i} className="flex items-start gap-2 md:gap-3">
-                      <Check className="w-4 h-4 md:w-5 md:h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm md:text-base text-slate-300">
+                      <Check className="w-4 h-4 md:w-5 md:h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm md:text-base text-slate-700">
                         {feature}
                       </span>
                     </div>
@@ -372,7 +372,7 @@ function PricingCards({ packages, billingPeriod }: { packages: typeof websitePac
             <CardFooter>
               <Link href={`/get-started?package=${pkg.productId}&price=${pkg.price}&billing=${billingPeriod}&retainer=${displayPrice || 0}`} className="w-full">
                 <Button 
-                  className={`w-full ${pkg.highlight ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" : "bg-slate-700 hover:bg-slate-600"}`}
+                  className={`w-full ${pkg.highlight ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white" : "bg-slate-700 hover:bg-slate-800 text-white"}`}
                   size="lg"
                 >
                   Get Started
@@ -392,38 +392,38 @@ export default function PricingPage() {
   const [activeTab, setActiveTab] = useState<string>("websites");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div className="container mx-auto px-4 pt-24 pb-16">
         <div className="text-center max-w-3xl mx-auto mb-8">
-          <Badge variant="outline" className="mb-4 border-primary/50 text-primary">
+          <Badge variant="outline" className="mb-4 border-blue-500 text-blue-600 bg-blue-50">
             Transparent Pricing
           </Badge>
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-6 text-slate-900">
             Premium Solutions, Accessible Prices
           </h1>
-          <p className="text-xl text-slate-300 mb-4">
+          <p className="text-xl text-slate-600 mb-4">
             No hidden fees. No surprise charges. Just honest, upfront pricing for professional services.
           </p>
-          <p className="text-lg text-slate-400">
+          <p className="text-lg text-slate-500">
             Choose from websites, web applications, or automation services
           </p>
         </div>
 
         {/* Billing Period Toggle */}
         <div className="flex items-center justify-center gap-4 mb-12">
-          <Label htmlFor="billing-toggle" className={`text-base ${billingPeriod === 'monthly' ? 'text-white font-semibold' : 'text-slate-400'}`}>
+          <Label htmlFor="billing-toggle" className={`text-base ${billingPeriod === 'monthly' ? 'text-slate-900 font-semibold' : 'text-slate-500'}`}>
             Monthly
           </Label>
           <Switch
             id="billing-toggle"
             checked={billingPeriod === 'yearly'}
             onCheckedChange={(checked) => setBillingPeriod(checked ? 'yearly' : 'monthly')}
-            className="data-[state=checked]:bg-green-600"
+            className="data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-slate-300"
           />
-          <Label htmlFor="billing-toggle" className={`text-base ${billingPeriod === 'yearly' ? 'text-white font-semibold' : 'text-slate-400'}`}>
+          <Label htmlFor="billing-toggle" className={`text-base ${billingPeriod === 'yearly' ? 'text-slate-900 font-semibold' : 'text-slate-500'}`}>
             Yearly
-            <span className="ml-2 text-xs bg-green-600/20 text-green-400 px-2 py-1 rounded-full border border-green-600/30">
+            <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full border border-green-200">
               Save 15%
             </span>
           </Label>
@@ -431,11 +431,11 @@ export default function PricingPage() {
 
         {/* Tabbed Pricing Sections */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 mb-12 bg-white/80 backdrop-blur-lg p-1 border border-slate-200 shadow-lg">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 mb-12 bg-slate-100 p-1 border border-slate-200 shadow-sm">
             <TabsTrigger 
               value="websites"
               onClick={() => setActiveTab("websites")}
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-100 transition-all duration-300 cursor-pointer"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=inactive]:bg-white data-[state=inactive]:text-slate-900 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-50 transition-all duration-300 cursor-pointer font-medium"
             >
               <Globe className="w-4 h-4 mr-2" />
               Websites
@@ -443,7 +443,7 @@ export default function PricingPage() {
             <TabsTrigger 
               value="web-apps"
               onClick={() => setActiveTab("web-apps")}
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-100 transition-all duration-300 cursor-pointer"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=inactive]:bg-white data-[state=inactive]:text-slate-900 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-50 transition-all duration-300 cursor-pointer font-medium"
             >
               <Code className="w-4 h-4 mr-2" />
               Web Apps
@@ -451,7 +451,7 @@ export default function PricingPage() {
             <TabsTrigger 
               value="automation"
               onClick={() => setActiveTab("automation")}
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-100 transition-all duration-300 cursor-pointer"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=inactive]:bg-white data-[state=inactive]:text-slate-900 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-50 transition-all duration-300 cursor-pointer font-medium"
             >
               <Settings className="w-4 h-4 mr-2" />
               Automation
@@ -460,8 +460,8 @@ export default function PricingPage() {
 
           <TabsContent value="websites">
             <div className="mb-8 text-center">
-              <h2 className="text-3xl font-bold mb-3">Website Development</h2>
-              <p className="text-slate-400 max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold mb-3 text-slate-900">Website Development</h2>
+              <p className="text-slate-600 max-w-2xl mx-auto">
                 Professional websites that drive results and convert visitors into customers
               </p>
             </div>
@@ -470,8 +470,8 @@ export default function PricingPage() {
 
           <TabsContent value="web-apps">
             <div className="mb-8 text-center">
-              <h2 className="text-3xl font-bold mb-3">Web Application Development</h2>
-              <p className="text-slate-400 max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold mb-3 text-slate-900">Web Application Development</h2>
+              <p className="text-slate-600 max-w-2xl mx-auto">
                 Custom web applications built to scale your business and automate processes
               </p>
             </div>
@@ -480,8 +480,8 @@ export default function PricingPage() {
 
           <TabsContent value="automation">
             <div className="mb-8 text-center">
-              <h2 className="text-3xl font-bold mb-3">Business Automation Services</h2>
-              <p className="text-slate-400 max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold mb-3 text-slate-900">Business Automation Services</h2>
+              <p className="text-slate-600 max-w-2xl mx-auto">
                 Streamline operations and save time with intelligent automation solutions
               </p>
             </div>
@@ -491,21 +491,21 @@ export default function PricingPage() {
 
         {/* Custom Solutions CTA */}
         <div className="mt-20 text-center">
-          <Card className="max-w-3xl mx-auto bg-gradient-to-r from-primary/10 to-blue-500/10 border-primary/20">
+          <Card className="max-w-3xl mx-auto bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
             <CardHeader>
-              <CardTitle className="text-3xl">Need a Custom Solution?</CardTitle>
-              <CardDescription className="text-lg text-slate-300">
+              <CardTitle className="text-3xl text-slate-900">Need a Custom Solution?</CardTitle>
+              <CardDescription className="text-lg text-slate-600">
                 We can create a tailored package that perfectly fits your unique business needs
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/get-started">
-                <Button size="lg" variant="outline">
+                <Button size="lg" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-100">
                   Schedule a Consultation
                 </Button>
               </Link>
               <Link href="tel:+17048068682">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
                   <Phone className="w-4 h-4 mr-2" />
                   (704) 806-8682
                 </Button>
@@ -516,22 +516,22 @@ export default function PricingPage() {
 
         {/* Trust Indicators */}
         <div className="mt-16 text-center">
-          <p className="text-slate-400 mb-6">Trusted by businesses across North Carolina</p>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8 text-xs md:text-sm text-slate-500">
+          <p className="text-slate-600 mb-6">Trusted by businesses across North Carolina</p>
+          <div className="flex flex-wrap justify-center gap-4 md:gap-8 text-xs md:text-sm text-slate-600">
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-primary" />
+              <Check className="w-4 h-4 text-blue-600" />
               Fast Delivery (2-4 weeks)
             </div>
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-primary" />
+              <Check className="w-4 h-4 text-blue-600" />
               No Hidden Fees
             </div>
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-primary" />
+              <Check className="w-4 h-4 text-blue-600" />
               Transparent Process
             </div>
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-primary" />
+              <Check className="w-4 h-4 text-blue-600" />
               100% Satisfaction Guarantee
             </div>
           </div>

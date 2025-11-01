@@ -102,7 +102,13 @@ export async function scheduleSocialMediaPost(
 
 // Content calendar generator
 export async function generateContentCalendar(days: number = 30) {
-  const calendar = [];
+  const calendar: Array<{
+    date: string;
+    platform: "facebook" | "instagram" | "linkedin" | "twitter";
+    contentType: "educational" | "portfolio" | "service" | "testimonial" | "promotional" | "engagement";
+    content: string;
+    status: string;
+  }> = [];
   const today = new Date();
 
   // Generate posts for the next X days

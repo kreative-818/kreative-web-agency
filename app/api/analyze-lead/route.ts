@@ -22,10 +22,10 @@ export async function POST(request: Request) {
     }
 
     // Analyze website if it exists
-    let websiteScore = null;
+    let websiteScore: number | null = null;
     let websiteIssues: string[] = [];
-    let mobileFriendly = null;
-    let pageSpeedScore = null;
+    let mobileFriendly: boolean | null = null;
+    let pageSpeedScore: number | null = null;
 
     if (lead.websiteUrl) {
       try {

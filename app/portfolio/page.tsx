@@ -1,3 +1,4 @@
+export { dynamic, revalidate, fetchCache } from '@/lib/dynamic'
 
 import { Metadata } from "next";
 import PortfolioHero from "@/components/portfolio-hero";

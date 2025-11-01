@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     }
 
     // TODO: Handle file upload to cloud storage if logoFile exists
-    let logoUrl = null;
+    let logoUrl: string | null = null;
     if (logoFile) {
       // For now, just store the filename
       // In production, you'd upload to S3 or similar

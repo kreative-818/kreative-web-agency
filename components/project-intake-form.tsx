@@ -154,7 +154,15 @@ export default function ProjectIntakeForm() {
     const isWebApp = selectedPackage.includes("webapp");
     const isAutomation = selectedPackage.includes("automation");
 
-    const upsells = [];
+    const upsells: Array<{
+      id: string;
+      name: string;
+      price: number;
+      monthlyPrice?: number;
+      description: string;
+      reason: string;
+      icon: string;
+    }> = [];
 
     // Advanced SEO Package - only for Basic (Professional+ already has GMB optimization)
     if (isBasicWebsite) {

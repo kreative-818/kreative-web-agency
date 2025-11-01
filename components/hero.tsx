@@ -59,7 +59,7 @@ const Hero = () => {
         >
           <div className="flex flex-col sm:flex-row gap-4">
             <Button asChild size="lg" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-lg px-10 py-6 group shadow-2xl shadow-blue-500/50">
-              <Link href="/quote/index.html">
+              <Link href="/get-quote">
                 Get Your Free Quote
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>

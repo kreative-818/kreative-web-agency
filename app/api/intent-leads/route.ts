@@ -29,15 +29,15 @@ export async function GET(request: NextRequest) {
     // Calculate stats
     const stats = {
       total: leads.length,
-      qualified: leads.filter(l => l.qualificationStatus === 'QUALIFIED').length,
-      pending: leads.filter(l => l.qualificationStatus === 'PENDING').length,
-      contacted: leads.filter(l => l.firstContactedAt !== null).length,
-      converted: leads.filter(l => l.qualificationStatus === 'CONVERTED').length,
+      qualified: leads.filter((l: any) => l.qualificationStatus === 'QUALIFIED').length,
+      pending: leads.filter((l: any) => l.qualificationStatus === 'PENDING').length,
+      contacted: leads.filter((l: any) => l.firstContactedAt !== null).length,
+      converted: leads.filter((l: any) => l.qualificationStatus === 'CONVERTED').length,
       averageScore: leads.length > 0 
-        ? Math.round(leads.reduce((sum: number, l) => sum + l.leadScore, 0) / leads.length)
+        ? Math.round(leads.reduce((sum: number, l: any) => sum + l.leadScore, 0) / leads.length)
         : 0,
       averageBudget: leads.length > 0
-        ? Math.round(leads.reduce((sum: number, l) => sum + (l.budgetAmount || 0), 0) / leads.length)
+        ? Math.round(leads.reduce((sum: number, l: any) => sum + (l.budgetAmount || 0), 0) / leads.length)
         : 0
     };
 

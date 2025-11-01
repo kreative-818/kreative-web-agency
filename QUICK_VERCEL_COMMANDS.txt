@@ -1,0 +1,73 @@
+
+QUICK VERCEL DEPLOYMENT COMMANDS
+=================================
+
+GET YOUR TOKEN FIRST:
+https://vercel.com/account/tokens → Create Token → Copy it!
+
+DEPLOY (Choose one method):
+----------------------------
+
+Method 1: Interactive login (Browser popup)
+$ cd /home/ubuntu/creative_web_agency/nextjs_space
+$ ./node_modules/.bin/vercel login
+$ ./node_modules/.bin/vercel --prod --confirm
+
+Method 2: Use token as environment variable
+$ cd /home/ubuntu/creative_web_agency/nextjs_space
+$ export VERCEL_TOKEN="your_token_here"
+$ ./node_modules/.bin/vercel --prod --confirm
+
+Method 3: Use token directly in command
+$ cd /home/ubuntu/creative_web_agency/nextjs_space
+$ ./node_modules/.bin/vercel --token "your_token_here" --prod --confirm
+
+
+AFTER DEPLOYMENT:
+-----------------
+1. Copy the deployment URL you receive
+2. Go to: https://vercel.com/dashboard
+3. Find your project → Settings → Environment Variables
+4. Add all env vars from your .env file
+5. Redeploy from Deployments tab
+
+
+CHECK DEPLOYMENT STATUS:
+------------------------
+$ ./node_modules/.bin/vercel ls
+$ ./node_modules/.bin/vercel inspect <deployment-url>
+
+
+COMMON ISSUES:
+--------------
+Error: "No existing credentials"
+→ You need to login or provide token
+
+Error: "Build failed"
+→ Run: yarn prisma generate && yarn build
+→ Check Vercel logs in dashboard
+
+Error: "Environment variables not found"
+→ Add them in Vercel dashboard
+→ Redeploy after adding
+
+
+DNS SETUP (AFTER VERCEL IS WORKING):
+-------------------------------------
+Vercel Dashboard → Project → Settings → Domains:
+- Add: kreativeaiagency.com (PRIMARY)
+- Add: www.kreativeaiagency.com
+
+GoDaddy DNS Manager:
+- A record @ → 76.76.21.21
+- CNAME www → cname.vercel-dns.com
+
+Wait 15-30 min → Test https://kreativeaiagency.com
+
+
+NEED FULL GUIDE?
+----------------
+See: VERCEL_DEPLOYMENT_GUIDE.md
+See: VERCEL_MIGRATION_CHECKLIST.md
+See: DNS_README_VERCEL.txt
+

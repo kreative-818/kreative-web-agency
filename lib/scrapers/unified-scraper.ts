@@ -132,7 +132,7 @@ export async function scrapeAllPlatforms(
     for (const business of deduped) {
       try {
         // Analyze website if available
-        let websiteAnalysis = null;
+        let websiteAnalysis: { overallScore: number; mobileFriendly: boolean; issues: string[] } | null = null;
         if (business.websiteUrl) {
           websiteAnalysis = await analyzeWebsite(business.websiteUrl);
         }

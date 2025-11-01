@@ -107,7 +107,7 @@ const ServicesOverview = () => {
           className="text-center mt-16"
         >
           <Button asChild size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-3">
-            <Link href="/services/index.html">Explore All Services</Link>
+            <Link href="/services">Explore All Services</Link>
           </Button>
         </motion.div>
       </div>

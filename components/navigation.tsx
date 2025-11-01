@@ -15,10 +15,10 @@ const Navigation = () => {
 
   const navItems = [
     { href: "/", label: "Home" },
-    { href: "/services/index.html", label: "Services" },
+    { href: "/services", label: "Services" },
     { href: "/portfolio", label: "Portfolio" },
     { href: "/pricing", label: "Pricing" },
-    { href: "/about/index.html", label: "About" },
+    { href: "/about", label: "About" },
   ];
 
   return (

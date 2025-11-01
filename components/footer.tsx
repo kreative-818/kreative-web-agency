@@ -34,7 +34,7 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-slate-900 mb-4">Quick Links</h3>
             <div className="space-y-2">
-              <Link href="/services/index.html" className="block text-slate-600 hover:text-slate-900 transition-colors duration-200 text-sm">
+              <Link href="/services" className="block text-slate-600 hover:text-slate-900 transition-colors duration-200 text-sm">
                 Services
               </Link>
               <Link href="/portfolio" className="block text-slate-600 hover:text-slate-900 transition-colors duration-200 text-sm">
@@ -43,7 +43,7 @@ const Footer = () => {
               <Link href="/pricing" className="block text-slate-600 hover:text-slate-900 transition-colors duration-200 text-sm">
                 Pricing
               </Link>
-              <Link href="/about/index.html" className="block text-slate-600 hover:text-slate-900 transition-colors duration-200 text-sm">
+              <Link href="/about" className="block text-slate-600 hover:text-slate-900 transition-colors duration-200 text-sm">
                 About
               </Link>
             </div>
