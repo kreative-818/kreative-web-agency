@@ -1,8 +1,16 @@
 
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Contact } from '@prisma/client';
 
 const prisma = new PrismaClient();
+
+type ContactWithConversations = Contact & {
+  conversations: {
+    id: string;
+    createdAt: Date;
+    status: string;
+  }[];
+};
 
 // GET - Fetch all contacts
 export async function GET(request: NextRequest) {
@@ -24,10 +32,10 @@ export async function GET(request: NextRequest) {
 
     const stats = {
       total: contacts.length,
-      new: contacts.filter(c => c.status === 'new').length,
-      contacted: contacts.filter(c => c.status === 'contacted').length,
-      qualified: contacts.filter(c => c.status === 'qualified').length,
-      converted: contacts.filter(c => c.status === 'converted').length,
+      new: contacts.filter((c: ContactWithConversations) => c.status === 'new').length,
+      contacted: contacts.filter((c: ContactWithConversations) => c.status === 'contacted').length,
+      qualified: contacts.filter((c: ContactWithConversations) => c.status === 'qualified').length,
+      converted: contacts.filter((c: ContactWithConversations) => c.status === 'converted').length,
     };
 
     return NextResponse.json({ contacts, stats });
