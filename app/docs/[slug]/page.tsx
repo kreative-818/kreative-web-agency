@@ -1,3 +1,4 @@
+export { dynamic, revalidate, fetchCache } from '@/lib/dynamic'
 
 import { notFound } from 'next/navigation';
 import Link from 'next/link';

@@ -1,3 +1,4 @@
+export { dynamic, revalidate, fetchCache } from '@/lib/dynamic'
 
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -28,7 +29,7 @@ export default async function BlogPage() {
   // Get unique categories
   const categories = Array.from(
     new Set(posts.map((p) => p.category).filter(Boolean))
-  );
+  ) as string[];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -164,7 +165,7 @@ export default async function BlogPage() {
             Let's discuss your project and create something amazing together.
           </p>
           <Link
-            href="/quote/index.html"
+            href="/get-quote"
             className="inline-block bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition"
           >
             Get a Free Quote

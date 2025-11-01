@@ -1,3 +1,4 @@
+export { dynamic, revalidate, fetchCache } from '@/lib/dynamic'
 
 import Link from 'next/link';
 import { FileText, Rocket, Brain, DollarSign, Users, Zap, BookOpen, TrendingUp } from 'lucide-react';
