@@ -2,6 +2,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
+type ScrapedLeadGroupBy = {
+  primarySource: string;
+  _count: { id: number };
+  _avg: { leadScore: number | null };
+}
+
 export async function GET(req: NextRequest) {
   try {
     // Get lead source analytics
@@ -27,7 +33,7 @@ export async function GET(req: NextRequest) {
 
     // Calculate conversion rates by source
     const sourceStats = await Promise.all(
-      scrapedLeads.map(async (source) => {
+      scrapedLeads.map(async (source: ScrapedLeadGroupBy) => {
         const converted = await prisma.scrapedLead.count({
           where: {
             primarySource: source.primarySource,
@@ -63,12 +69,12 @@ export async function GET(req: NextRequest) {
 
     // Get organic (SEO) leads from intent leads
     const organicLeads = intentLeads.filter(
-      (lead) => lead.utmSource === 'organic' || lead.utmSource === null
+      (lead: any) => lead.utmSource === 'organic' || lead.utmSource === null
     );
 
-    const organicTotal = organicLeads.reduce((sum, lead) => sum + lead._count.id, 0);
+    const organicTotal = organicLeads.reduce((sum: number, lead: any) => sum + lead._count.id, 0);
     const organicAvgScore = organicLeads.length > 0
-      ? Math.round(organicLeads.reduce((sum, lead) => sum + (lead._avg.leadScore || 0), 0) / organicLeads.length)
+      ? Math.round(organicLeads.reduce((sum: number, lead: any) => sum + (lead._avg.leadScore || 0), 0) / organicLeads.length)
       : 0;
 
     // Add organic SEO to stats
